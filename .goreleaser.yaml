@@ -63,18 +63,18 @@ checksum:
   name_template: "checksums.txt"
 
 # Docker image for the broker (relay) — run in 5 seconds
-# Set GHCR_IMAGE to push under your namespace (e.g. ghcr.io/YOUR_USERNAME/qumbed) if you get permission_denied: create_package
+# Repo: https://github.com/SWAI-Ltd/Qumbed — set GHCR_IMAGE to override (e.g. ghcr.io/your-org/qumbed)
 dockers_v2:
   - id: broker
     ids:
       - relay
     dockerfile: Dockerfile
     images:
-      - "{{ if .Env.GHCR_IMAGE }}{{ .Env.GHCR_IMAGE }}{{ else }}ghcr.io/qumbed/qumbed{{ end }}"
+      - "{{ if .Env.GHCR_IMAGE }}{{ .Env.GHCR_IMAGE }}{{ else }}ghcr.io/swai-ltd/qumbed{{ end }}"
     tags:
       - "{{ .Version }}"
       - "{{ if not .Prerelease }}latest{{ end }}"
     labels:
       org.opencontainers.image.title: qumbed
       org.opencontainers.image.description: Qumbed message broker (relay)
-      org.opencontainers.image.source: "https://github.com/qumbed/qumbed"
+      org.opencontainers.image.source: "https://github.com/SWAI-Ltd/Qumbed"

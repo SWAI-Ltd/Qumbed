@@ -23,7 +23,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-# Log in to GitHub Container Registry so Docker can push ghcr.io/qumbed/qumbed
+# Log in to GitHub Container Registry so Docker can push ghcr.io/swai-ltd/qumbed
 GITHUB_USER="${GITHUB_USER:-$(gh api user --jq .login 2>/dev/null)}"
 if [ -z "$GITHUB_USER" ]; then
   echo "Set GITHUB_USER (your GitHub username) so we can log in to ghcr.io, or run: docker login ghcr.io -u YOUR_USERNAME"

@@ -8,7 +8,7 @@ Built for **Linux**, **macOS**, and **Windows** (amd64 and arm64).
 
 - **relay** — the message broker (relay server)
 
-Download the archive for your OS from the [Releases](https://github.com/SWAI-Ltd/qumbed/releases) page, then:
+Download the archive for your OS from the [Releases](https://github.com/SWAI-Ltd/Qumbed/releases) page, then:
 
 ```bash
 # Linux/macOS
@@ -36,22 +36,22 @@ For testing topics and connections:
 Use the published image (after your first release):
 
 ```bash
-docker pull ghcr.io/qumbed/qumbed:latest
-docker run -p 6121:6121 ghcr.io/qumbed/qumbed:latest
+docker pull ghcr.io/swai-ltd/qumbed:latest
+docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:latest
 ```
 
 Or with an explicit version:
 
 ```bash
-docker pull ghcr.io/qumbed/qumbed:v1.0.0
-docker run -p 6121:6121 ghcr.io/qumbed/qumbed:v1.0.0
+docker pull ghcr.io/swai-ltd/qumbed:v1.0.0
+docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:v1.0.0
 ```
 
 The broker listens on **port 6121**. To use it from the host:
 
 ```bash
 # Terminal 1: broker
-docker run -p 6121:6121 ghcr.io/qumbed/qumbed:latest
+docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:latest
 
 # Terminal 2: CLI (using release binary or go run)
 ./qumbed-check -topic test -relay localhost:6121
@@ -72,10 +72,10 @@ export GITHUB_USER=your-github-username
 
 The script logs in to **ghcr.io** with your token so the broker image can be pushed. Your token needs `write:packages` (and `repo` for the GitHub release). If you have the GitHub CLI (`gh`) installed and logged in, `GITHUB_USER` is inferred automatically.
 
-If you get **`permission_denied: create_package`**, you don't have permission to create the image under the default `qumbed` org. Push under your own namespace instead:
+If you get **`permission_denied: create_package`**, you don't have push access to the default image (`ghcr.io/swai-ltd/qumbed`). Push under your own namespace instead:
 
 ```bash
-export GHCR_IMAGE=ghcr.io/SWAI-Ltd/qumbed
+export GHCR_IMAGE=ghcr.io/YOUR_USERNAME/qumbed
 ./release/release.sh
 ```
 
@@ -102,7 +102,7 @@ Artifacts are written to `dist/`.
 
 ## Image registry
 
-The default image is **ghcr.io/qumbed/qumbed** (requires push access to that package). To push under your own GitHub user or another registry:
+The default image is **ghcr.io/swai-ltd/qumbed** ([SWAI-Ltd/Qumbed](https://github.com/SWAI-Ltd/Qumbed)). To push under a different org/user or registry:
 
 ```bash
 export GHCR_IMAGE=ghcr.io/YOUR_USERNAME/qumbed
