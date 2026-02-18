@@ -2,10 +2,6 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![ProVerif](https://img.shields.io/badge/ProVerif-verified-green.svg)](docs/proverif.md)
-[![build](https://github.com/SWAI-Ltd/Qumbed/actions/workflows/build.yml/badge.svg)](https://github.com/SWAI-Ltd/Qumbed/actions/workflows/build.yml)
-[![OS](https://img.shields.io/badge/OS-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](https://github.com/SWAI-Ltd/Qumbed)
-[![Arch](https://img.shields.io/badge/Arch-amd64%20%7C%20arm64-lightgrey)](https://github.com/SWAI-Ltd/Qumbed)
-[![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?logo=go&logoColor=white)](https://go.dev/)
 
 Qumbed is a modern pub/sub messaging protocol that addresses the main limitations of MQTT with a QUIC-based, P2P-capable, E2EE-first design.
 
