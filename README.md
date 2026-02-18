@@ -1,12 +1,12 @@
 # Qumbed — A Next-Gen MQTT Alternative in Go
 
-[![Build](https://github.com/qumbed/qumbed/.github/workflows/build.yml/badge.svg)](https://github.com/qumbed/qumbed/.github/workflows/build.yml)
+[![Build](https://github.com/SWAI-Ltd/Qumbed/actions/workflows/build.yml/badge.svg)](https://github.com/SWAI-Ltd/Qumbed/actions/workflows/build.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![ProVerif](https://img.shields.io/badge/ProVerif-verified-green.svg)](docs/proverif.md)
 
 **Platform support:**  
-[![OS](https://img.shields.io/badge/OS-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](https://github.com/qumbed/qumbed)
-[![Arch](https://img.shields.io/badge/Arch-amd64%20%7C%20arm64-lightgrey)](https://github.com/qumbed/qumbed)
+[![OS](https://img.shields.io/badge/OS-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey)](https://github.com/SWAI-Ltd/Qumbed)
+[![Arch](https://img.shields.io/badge/Arch-amd64%20%7C%20arm64-lightgrey)](https://github.com/SWAI-Ltd/Qumbed)
 [![Go](https://img.shields.io/badge/Go-1.22%2B-00ADD8?logo=go)](https://go.dev/)
 
 Qumbed is a modern pub/sub messaging protocol that addresses the main limitations of MQTT with a QUIC-based, P2P-capable, E2EE-first design.
