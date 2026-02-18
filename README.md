@@ -164,16 +164,6 @@ qumbed/
   ```
   Then publish to `test`; the tool prints whether each message is valid for the given schema.
 
-### Pro tip for Go devs
-
-Use **`golangci-lint`** and **`go doc`**. If you comment your Go code, you can run **`pkgsite`** locally to serve a searchable API doc site:
-
-```bash
-go install golang.org/x/pkgsite/cmd/pkgsite@latest
-pkgsite -http=:6060
-# Open http://localhost:6060 and search for github.com/qumbed/qumbed
-```
-
 ## License
 
 This project is open source under the [Apache License 2.0](LICENSE).
