@@ -102,10 +102,10 @@ Artifacts are written to `dist/`.
 
 ## Image registry
 
-The default image is **ghcr.io/swai-ltd/qumbed** ([SWAI-Ltd/Qumbed](https://github.com/SWAI-Ltd/Qumbed)). To push under a different org/user or registry:
+The default image is **ghcr.io/swai-ltd/qumbed** ([SWAI-Ltd/Qumbed](https://github.com/SWAI-Ltd/Qumbed)). To push under a different org/user or registry (use **lowercase** image names, e.g. `ghcr.io/your-org/qumbed`):
 
 ```bash
-export GHCR_IMAGE=ghcr.io/YOUR_USERNAME/qumbed
+export GHCR_IMAGE=ghcr.io/your-username/qumbed
 ./release/release.sh
 ```
 
