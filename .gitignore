@@ -1,0 +1,90 @@
+# Qumbed — .gitignore for open source (Apache-2.0)
+# Keep build artifacts, secrets, and local dev files out of the repo.
+
+# Binaries and build
+/bin/
+/dist/
+/out/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.o
+*.a
+
+# Go
+/vendor/
+go.work
+go.work.sum
+*.mod.bak
+
+# Coverage and profiling
+coverage.out
+coverage.html
+coverage.txt
+*.prof
+*.pprof
+cpu.prof
+mem.prof
+
+# Generated code (protoc; uncomment to commit generated .pb.go)
+*.pb.go
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# Cursor / AI editor
+.cursor/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Environment and secrets (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Logs and temporary
+*.log
+*.tmp
+.*.tmp
+*.tmp.*
+*.temp
+*.bak
+*.cache
+*.orig
+
+# Debug and local
+/__debug_bin
+/debug
+.debug
+*.local
+*.local.*
+
+# Test / tooling
+/testdata/*.key
+/testdata/*.pem
+/tmp/
+/temp/

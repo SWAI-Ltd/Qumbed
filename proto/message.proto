@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package qumbed;
+
+option go_package = "github.com/qumbed/qumbed/internal/proto";
+
+// Frame is the top-level wire format for all Qumbed messages
+message Frame {
+  oneof payload {
+    PublishFrame publish = 1;
+    SubscribeFrame subscribe = 2;
+    UnsubscribeFrame unsubscribe = 3;
+    MessageFrame message = 4;
+    AckFrame ack = 5;
+    ErrorFrame error = 6;
+    DiscoveryFrame discovery = 7;
+  }
+}
+
+// PublishFrame - publisher sends typed message to a topic
+message PublishFrame {
+  string topic = 1;
+  bytes payload = 2;        // Protobuf-serialized, E2EE encrypted
+  string schema_id = 3;     // Schema identifier for validation (e.g., "sensor.Temperature")
+  bytes recipient_key_id = 4;  // ID of recipient's public key (for routing)
+}
+
+// SubscribeFrame - subscriber registers interest in a topic
+message SubscribeFrame {
+  string topic = 1;
+  string schema_id = 2;     // Expected schema, broker rejects mismatches
+  bytes public_key = 3;     // Subscriber's public key for E2EE
+}
+
+// UnsubscribeFrame
+message UnsubscribeFrame {
+  string topic = 1;
+}
+
+// MessageFrame - relayed message (encrypted payload, broker cannot read)
+message MessageFrame {
+  string topic = 1;
+  bytes encrypted_payload = 2;
+  bytes sender_key_id = 3;
+}
+
+// AckFrame - acknowledgment
+message AckFrame {
+  string message_id = 1;
+  bool ok = 2;
+}
+
+// ErrorFrame - error response
+message ErrorFrame {
+  string code = 1;
+  string message = 2;
+}
+
+// DiscoveryFrame - for P2P discovery/metadata
+message DiscoveryFrame {
+  string node_id = 1;
+  repeated string topics = 2;
+  bytes public_key = 3;
+  string addr = 4;
+}

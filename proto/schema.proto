@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package qumbed.schema;
+
+option go_package = "github.com/qumbed/qumbed/internal/proto";
+
+// Typed payload schemas - broker enforces these
+// Schema IDs: "sensor.Temperature", "sensor.Humidity", "control.Command", etc.
+
+message Temperature {
+  double celsius = 1;
+  int64 timestamp_ms = 2;
+  string sensor_id = 3;
+}
+
+message Humidity {
+  double percent = 1;
+  int64 timestamp_ms = 2;
+  string sensor_id = 3;
+}
+
+message Command {
+  string action = 1;   // "start", "stop", "calibrate"
+  map<string, string> params = 2;
+}

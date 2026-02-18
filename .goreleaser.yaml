@@ -1,0 +1,77 @@
+# GoReleaser config for qumbed — broker binary, CLI, and Docker
+# https://goreleaser.com
+version: 2
+
+project_name: qumbed
+
+builds:
+  # Broker (relay) — the main message broker binary
+  - id: relay
+    main: ./cmd/relay
+    binary: relay
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+
+  # CLI tool for testing topics and connections
+  - id: qumbed-check
+    main: ./cmd/qumbed-check
+    binary: qumbed-check
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+
+archives:
+  - id: relay
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    builds:
+      - relay
+  - id: qumbed-check
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{ .Binary }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    builds:
+      - qumbed-check
+
+checksum:
+  name_template: "checksums.txt"
+
+# Docker image for the broker (relay) — run in 5 seconds
+# Publish to GitHub Container Registry: ghcr.io/owner/repo
+# Or set GORELEASER_IMAGE in env to override
+dockers_v2:
+  - id: broker
+    ids:
+      - relay
+    dockerfile: Dockerfile
+    images:
+      - "ghcr.io/qumbed/qumbed"
+    tags:
+      - "{{ .Version }}"
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    labels:
+      org.opencontainers.image.title: qumbed
+      org.opencontainers.image.description: Qumbed message broker (relay)
+      org.opencontainers.image.source: "https://github.com/qumbed/qumbed"

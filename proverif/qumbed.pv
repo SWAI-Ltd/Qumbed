@@ -1,0 +1,71 @@
+(* Qumbed protocol — matches the main project
+   Subscribe (topic + subscriber public key), Publish (E2EE payload),
+   Relay forwards (topic, encrypted_payload, sender_public_key). No separate
+   signature: authenticity is from NaCl box (authenticated encryption).
+   See docs/proverif.md and docs/wire-protocol.md §6. *)
+
+free c: channel.
+
+type skey.
+type pkey.
+
+fun pk(skey): pkey.
+
+(* NaCl box abstracted: encrypt(m, recipient_pk, sender_sk); only recipient
+   decrypts; only sender could have created the ciphertext (authenticated). *)
+fun boxenc(bitstring, pkey, skey): bitstring.
+reduc forall m: bitstring, rsk: skey, ssk: skey;
+  boxdec(boxenc(m, pk(rsk), ssk), pk(ssk), rsk) = m.
+
+(* Topic (public); payload (secret) *)
+free topic: bitstring.
+free payload: bitstring [private].
+
+(* Events and queries *)
+event subscriberReceived(bitstring).
+event publisherSent(bitstring).
+query attacker(payload).
+query x: bitstring; event(subscriberReceived(x)) ==> event(publisherSent(x)).
+
+(* Subscriber: only accepts when sender is the honest publisher (deployment assumption: trust one publisher key) *)
+let processSubscriber(skHonest: skey, pkHonest: pkey, pkPubHonest: pkey) =
+  out(c, (topic, pkHonest));
+  in(c, (topic2: bitstring, ciphertext: bitstring, pkSender: pkey));
+  if pkSender = pkPubHonest then
+    let plaintext = boxdec(ciphertext, pkSender, skHonest) in
+    event subscriberReceived(plaintext);
+    0
+  else
+    0.
+
+(* One honest publisher key; encrypts only for pkHonest. Unbounded sessions. *)
+let processPublisher(pkHonest: pkey, skPubHonest: skey, pkPubHonest: pkey) =
+  in(c, (topicReq: bitstring, pkRecipient: pkey));
+  if pkRecipient = pkHonest then
+    event publisherSent(payload);
+    out(c, (topicReq, boxenc(payload, pkHonest, skPubHonest), pkPubHonest))
+  else
+    0.
+
+(* Relay: zero-knowledge forward — same shapes as wire spec *)
+let processRelaySubscribe =
+  in(c, (t: bitstring, pkK: pkey));
+  out(c, (t, pkK));
+  0.
+
+let processRelayPublish =
+  in(c, (t: bitstring, enc: bitstring, pkK: pkey));
+  out(c, (t, enc, pkK));
+  0.
+
+(* One honest subscriber, one honest publisher key, relay *)
+process
+  new skHonest: skey;
+  let pkHonest = pk(skHonest) in
+  new skPubHonest: skey;
+  let pkPubHonest = pk(skPubHonest) in
+  ( !processSubscriber(skHonest, pkHonest, pkPubHonest)
+  | !processPublisher(pkHonest, skPubHonest, pkPubHonest)
+  | !processRelaySubscribe
+  | !processRelayPublish
+  )
