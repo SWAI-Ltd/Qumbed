@@ -63,15 +63,14 @@ checksum:
   name_template: "checksums.txt"
 
 # Docker image for the broker (relay) — run in 5 seconds
-# Publish to GitHub Container Registry: ghcr.io/owner/repo
-# Or set GORELEASER_IMAGE in env to override
+# Set GHCR_IMAGE to push under your namespace (e.g. ghcr.io/YOUR_USERNAME/qumbed) if you get permission_denied: create_package
 dockers_v2:
   - id: broker
     ids:
       - relay
     dockerfile: Dockerfile
     images:
-      - "ghcr.io/qumbed/qumbed"
+      - "{{ if .Env.GHCR_IMAGE }}{{ .Env.GHCR_IMAGE }}{{ else }}ghcr.io/qumbed/qumbed{{ end }}"
     tags:
       - "{{ .Version }}"
       - "{{ if not .Prerelease }}latest{{ end }}"

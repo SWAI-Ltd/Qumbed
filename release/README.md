@@ -72,6 +72,13 @@ export GITHUB_USER=your-github-username
 
 The script logs in to **ghcr.io** with your token so the broker image can be pushed. Your token needs `write:packages` (and `repo` for the GitHub release). If you have the GitHub CLI (`gh`) installed and logged in, `GITHUB_USER` is inferred automatically.
 
+If you get **`permission_denied: create_package`**, you don't have permission to create the image under the default `qumbed` org. Push under your own namespace instead:
+
+```bash
+export GHCR_IMAGE=ghcr.io/SWAI-Ltd/qumbed
+./release/release.sh
+```
+
 Or manually:
 
 ```bash
@@ -95,11 +102,11 @@ Artifacts are written to `dist/`.
 
 ## Image registry
 
-The default image is **ghcr.io/qumbed/qumbed**. To push elsewhere (e.g. Docker Hub), set in `.goreleaser.yaml` under `dockers_v2`:
+The default image is **ghcr.io/qumbed/qumbed** (requires push access to that package). To push under your own GitHub user or another registry:
 
-```yaml
-images:
-  - "docker.io/youruser/qumbed"
+```bash
+export GHCR_IMAGE=ghcr.io/YOUR_USERNAME/qumbed
+./release/release.sh
 ```
 
-Then run `goreleaser release` as above.
+For Docker Hub, set `GHCR_IMAGE=docker.io/youruser/qumbed` (and log in with `docker login`).
