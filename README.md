@@ -1,6 +1,6 @@
 # Qumbed — A Next-Gen MQTT Alternative in Go
 
-[![Build](https://github.com/qumbed/qumbed/workflows/build.yml/badge.svg)](https://github.com/qumbed/qumbed/actions/workflows/build.yml)
+[![Build](https://github.com/qumbed/qumbed/workflows/build.yml/badge.svg)](https://github.com/qumbed/qumbed/workflows/build.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![ProVerif](https://img.shields.io/badge/ProVerif-verified-green.svg)](docs/proverif.md)
 
