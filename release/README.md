@@ -60,11 +60,25 @@ docker run -p 6121:6121 ghcr.io/qumbed/qumbed:latest
 ## Building releases locally
 
 1. Install [GoReleaser](https://goreleaser.com/install/).
-2. Create a Git tag and run:
+2. **Start Docker Desktop** (required for building and pushing the broker image).
+3. Create a Git tag and run:
 
 ```bash
-git tag v1.0.0
-goreleaser release
+export GITHUB_TOKEN=ghp_xxxx
+./release/release.sh
+```
+
+Or manually:
+
+```bash
+git tag v1.0.0-alpha   # use semver, e.g. v1.0.0-alpha or v1.0.0
+goreleaser release --clean
+```
+
+The script checks that Docker is running and sets up a multi-platform buildx builder so the Docker image builds correctly. If you don't need the Docker image this run, use:
+
+```bash
+goreleaser release --clean --skip=docker
 ```
 
 For a dry run (no publish):
