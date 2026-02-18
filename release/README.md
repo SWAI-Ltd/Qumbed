@@ -65,8 +65,12 @@ docker run -p 6121:6121 ghcr.io/qumbed/qumbed:latest
 
 ```bash
 export GITHUB_TOKEN=ghp_xxxx
+# For pushing the Docker image to ghcr.io (optional if you use GitHub CLI: gh auth login)
+export GITHUB_USER=your-github-username
 ./release/release.sh
 ```
+
+The script logs in to **ghcr.io** with your token so the broker image can be pushed. Your token needs `write:packages` (and `repo` for the GitHub release). If you have the GitHub CLI (`gh`) installed and logged in, `GITHUB_USER` is inferred automatically.
 
 Or manually:
 
