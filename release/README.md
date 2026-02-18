@@ -8,7 +8,7 @@ Built for **Linux**, **macOS**, and **Windows** (amd64 and arm64).
 
 - **relay** — the message broker (relay server)
 
-Download the archive for your OS from the [Releases](https://github.com/qumbed/qumbed/releases) page, then:
+Download the archive for your OS from the [Releases](https://github.com/SWAI-Ltd/qumbed/releases) page, then:
 
 ```bash
 # Linux/macOS
