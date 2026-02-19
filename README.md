@@ -60,6 +60,16 @@ The application-layer protocol (Subscribe → Publish → Relay → Message) is 
 
 ## Quick Start
 
+### Build
+
+From the repo root (no Go files at root—code is in `cmd/`, `client/`, etc.):
+
+```bash
+go build ./...
+```
+
+This builds the relay, node, and qumbed-check binaries. To build a single command: `go build ./cmd/relay`, `go build ./cmd/node`, or `go build ./cmd/qumbed-check`.
+
 ### How do I connect?
 
 Use the **client SDK** so you don’t write raw sockets. Five lines to get going:
