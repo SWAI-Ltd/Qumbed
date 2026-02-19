@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/qumbed/qumbed/internal/crypto"
-	"github.com/qumbed/qumbed/internal/discovery"
-	"github.com/qumbed/qumbed/internal/proto"
-	"github.com/qumbed/qumbed/internal/transport"
+	"github.com/SWAI-Ltd/Qumbed/internal/crypto"
+	"github.com/SWAI-Ltd/Qumbed/internal/discovery"
+	"github.com/SWAI-Ltd/Qumbed/internal/proto"
+	"github.com/SWAI-Ltd/Qumbed/internal/transport"
 )
 
 // Node is a Qumbed mesh node: peer + optional relay

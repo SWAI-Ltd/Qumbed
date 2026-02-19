@@ -16,9 +16,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/qumbed/qumbed/client"
-	"github.com/qumbed/qumbed/internal/crypto"
-	"github.com/qumbed/qumbed/internal/proto"
+	"github.com/SWAI-Ltd/Qumbed/client"
+	"github.com/SWAI-Ltd/Qumbed/internal/crypto"
+	"github.com/SWAI-Ltd/Qumbed/internal/proto"
 )
 
 func main() {

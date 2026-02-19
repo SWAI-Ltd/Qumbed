@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/qumbed/qumbed/internal/mesh"
+	"github.com/SWAI-Ltd/Qumbed/internal/mesh"
 )
 
 func main() {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package qumbed.schema;
 
-option go_package = "github.com/qumbed/qumbed/internal/proto";
+option go_package = "github.com/SWAI-Ltd/Qumbed/internal/proto";
 
 // Typed payload schemas - broker enforces these
 // Schema IDs: "sensor.Temperature", "sensor.Humidity", "control.Command", etc.

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package qumbed;
 
-option go_package = "github.com/qumbed/qumbed/internal/proto";
+option go_package = "github.com/SWAI-Ltd/Qumbed/internal/proto";
 
 // Frame is the top-level wire format for all Qumbed messages
 message Frame {

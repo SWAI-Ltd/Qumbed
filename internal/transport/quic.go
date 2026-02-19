@@ -11,7 +11,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/qumbed/qumbed/internal/proto"
+	"github.com/SWAI-Ltd/Qumbed/internal/proto"
 	"github.com/quic-go/quic-go"
 )
 

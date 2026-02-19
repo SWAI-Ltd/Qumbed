@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/qumbed/qumbed/internal/proto"
-	"github.com/qumbed/qumbed/internal/transport"
+	"github.com/SWAI-Ltd/Qumbed/internal/proto"
+	"github.com/SWAI-Ltd/Qumbed/internal/transport"
 )
 
 // RelayServer is a zero-knowledge broker: routes by topic, never sees payload

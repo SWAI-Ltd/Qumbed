@@ -1,4 +1,4 @@
-module github.com/qumbed/qumbed
+module github.com/SWAI-Ltd/Qumbed
 
 go 1.22.0
 

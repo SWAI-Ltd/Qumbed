@@ -65,7 +65,7 @@ The application-layer protocol (Subscribe → Publish → Relay → Message) is 
 Use the **client SDK** so you don’t write raw sockets. Five lines to get going:
 
 ```go
-import "github.com/qumbed/qumbed/client"
+import "github.com/SWAI-Ltd/Qumbed/client"
 
 ctx := context.Background()
 c, err := client.New(ctx, client.Config{RelayAddr: "localhost:6121", DisableDiscovery: true})
@@ -107,7 +107,7 @@ go run ./cmd/node -mode pub -relay localhost:6121 -no-discovery
 
 ## Developer FAQ (README checklist)
 
-1. **How do I connect?** — Use the Go client: `import "github.com/qumbed/qumbed/client"` and `client.New(ctx, client.Config{RelayAddr: "host:6121", ...})`. See the 5-line snippet above and the [examples/](examples/) directory.
+1. **How do I connect?** — Use the Go client: `import "github.com/SWAI-Ltd/Qumbed/client"` and `client.New(ctx, client.Config{RelayAddr: "host:6121", ...})`. See the 5-line snippet above and the [examples/](examples/) directory.
 2. **How is it secure?** — **Transport:** QUIC uses TLS 1.3 (self-signed in dev; use your own certs in production). **Application:** E2EE by default with NaCl box (Curve25519). The relay never sees plaintext; it only routes by topic and key ID. See [examples/secure_conn/](examples/secure_conn/).
 3. **What is the performance gain?** — QUIC avoids head-of-line blocking (one lost packet doesn’t stall other streams). For latency/throughput numbers, run the [high-throughput example](examples/high_throughput/) and compare against MQTT on your workload.
 4. **How do I handle failures?** — There is no “Last Will” in v1. **Reconnection:** if the relay connection drops, create a new client (or reconnect) and call `Subscribe` again. Use `context.Context` for timeouts on `Publish`/`Subscribe`. Read from `c.Messages()` until the channel is closed when the client is closed.

@@ -7,9 +7,9 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/qumbed/qumbed/internal/crypto"
-	"github.com/qumbed/qumbed/internal/mesh"
-	"github.com/qumbed/qumbed/internal/proto"
+	"github.com/SWAI-Ltd/Qumbed/internal/crypto"
+	"github.com/SWAI-Ltd/Qumbed/internal/mesh"
+	"github.com/SWAI-Ltd/Qumbed/internal/proto"
 )
 
 const (
