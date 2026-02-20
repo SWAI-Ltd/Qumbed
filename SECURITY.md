@@ -24,6 +24,10 @@ The relay is a **zero-knowledge** forwarder. It routes frames by topic and key I
 
 Publishers must send payloads that validate against the declared schema (e.g. `sensor.Temperature`). The server rejects invalid or malformed payloads with `SCHEMA_INVALID`. This does not prevent malicious *content* (e.g. lies in a temperature value), but it stops arbitrary blob injection at the protocol level.
 
+### 0-RTT (session resumption)
+
+The relay and client use QUIC 0-RTT so **returning devices** can send data in the first packet without a full handshake (TLS session tickets are cached). That reduces connection latency from ~2 RTTs to effectively 0 RTT for reconnects. First-time connections still perform a full handshake and receive a session ticket for future 0-RTT.
+
 ---
 
 ## What We Do *Not* Protect Against
@@ -31,6 +35,10 @@ Publishers must send payloads that validate against the declared schema (e.g. `s
 ### Compromised physical device or process
 
 If an attacker has access to a device or process that holds a node’s **private key**, they can decrypt all messages for that node and impersonate it. We do not protect against device compromise, malware, or key extraction. Key storage and process isolation are the deployer’s responsibility.
+
+### 0-RTT replay
+
+Data sent in the 0-RTT phase is encrypted but **not forward-secure** and can be replayed by an attacker who captures it. The protocol uses 0-RTT for Subscribe and Publish. Subscribe is effectively idempotent; Publish may be replayed (duplicate delivery). Applications that require strict once-only semantics for publishes should use idempotency keys or accept replay risk for the first flight.
 
 ### Compromised relay (metadata)
 

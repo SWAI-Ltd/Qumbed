@@ -39,6 +39,7 @@ Nothing in the model (signatures, extra messages, or extra crypto) goes beyond w
 ## What is not modeled
 
 - TLS/QUIC (transport is a public channel; the model is conservative).
+- 0-RTT / session resumption (and thus 0-RTT replay); see SECURITY.md for transport-level caveats.
 - mDNS discovery, schema validation, rate limiting, implementation bugs.
 
 ## How to run
