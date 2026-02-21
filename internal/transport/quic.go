@@ -20,6 +20,19 @@ var defaultQuicConfig = &quic.Config{
 	MaxIdleTimeout: 5 * time.Minute,
 }
 
+// Server QUIC config: same as client + Allow0RTT for session resumption (0-RTT).
+var serverQuicConfig = &quic.Config{
+	MaxIdleTimeout: 5 * time.Minute,
+	Allow0RTT:      true,
+}
+
+// defaultClientSessionCache stores TLS session tickets so returning clients can use 0-RTT.
+var defaultClientSessionCache tls.ClientSessionCache
+
+func init() {
+	defaultClientSessionCache = tls.NewLRUClientSessionCache(100)
+}
+
 const (
 	AddrLADDR = ":0"
 	ProtoID   = "qumbed/1"
@@ -59,9 +72,13 @@ func (c *Conn) RecvFrame(f *proto.Frame) error {
 	return f.Decode(c.Stream)
 }
 
-// Close closes the stream
+// Close closes the stream and the QUIC connection (if set) to avoid leaks.
 func (c *Conn) Close() error {
-	return c.Stream.Close()
+	err := c.Stream.Close()
+	if c.Conn != nil {
+		_ = c.Conn.CloseWithError(0, "")
+	}
+	return err
 }
 
 // generateTLSConfig creates a self-signed cert for development
@@ -92,9 +109,9 @@ func generateTLSConfig() (*tls.Config, error) {
 	}, nil
 }
 
-// Server runs a QUIC listener
+// Server runs a QUIC listener (EarlyListener to accept 0-RTT connections).
 type Server struct {
-	Listener *quic.Listener
+	Listener *quic.EarlyListener
 	Handler  func(*Conn)
 }
 
@@ -104,12 +121,13 @@ func ListenQUIC(ctx context.Context, addr string) (*Server, error) {
 }
 
 // ListenQUICWithHandler starts a QUIC server with handler set before accepting.
+// Uses ListenAddrEarly and Allow0RTT so returning clients can send data in the first packet (0-RTT).
 func ListenQUICWithHandler(ctx context.Context, addr string, handler func(*Conn)) (*Server, error) {
 	tlsCfg, err := generateTLSConfig()
 	if err != nil {
 		return nil, err
 	}
-	listener, err := quic.ListenAddr(addr, tlsCfg, defaultQuicConfig)
+	listener, err := quic.ListenAddrEarly(addr, tlsCfg, serverQuicConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -141,13 +159,16 @@ func (s *Server) acceptLoop(ctx context.Context) {
 	}
 }
 
-// DialQUIC connects to a QUIC server (skips cert verification for dev)
+// DialQUIC connects to a QUIC server (skips cert verification for dev).
+// Uses DialAddrEarly and a shared ClientSessionCache so returning devices can send data
+// in the first packet (0-RTT), reducing handshake latency from ~2 RTTs to ~0 RTT.
 func DialQUIC(ctx context.Context, addr string) (*Conn, error) {
 	tlsCfg := &tls.Config{
 		InsecureSkipVerify: true,
 		NextProtos:         []string{ProtoID},
+		ClientSessionCache:  defaultClientSessionCache,
 	}
-	sess, err := quic.DialAddr(ctx, addr, tlsCfg, defaultQuicConfig)
+	sess, err := quic.DialAddrEarly(ctx, addr, tlsCfg, defaultQuicConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +177,7 @@ func DialQUIC(ctx context.Context, addr string) (*Conn, error) {
 		sess.CloseWithError(0, "")
 		return nil, err
 	}
-	return NewConn(stream), nil
+	return NewConnWithConn(stream, sess), nil
 }
 
 // LocalAddr returns the address of the QUIC listener
