@@ -96,7 +96,7 @@ dockers_v2:
       - relay
     dockerfile: Dockerfile
     images:
-      - "{{ if .Env.GHCR_IMAGE }}{{ .Env.GHCR_IMAGE }}{{ else }}ghcr.io/swai-ltd/qumbed{{ end }}"
+      - "{{ if index .Env \"GHCR_IMAGE\" }}{{ index .Env \"GHCR_IMAGE\" }}{{ else }}ghcr.io/swai-ltd/qumbed{{ end }}"
     tags:
       - "{{ .Version }}"
       - "{{ if not .Prerelease }}latest{{ end }}"
