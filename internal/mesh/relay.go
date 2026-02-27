@@ -1,7 +1,7 @@
 package mesh
 
-// Relay is a broker that routes messages without reading payload (zero-knowledge).
-// It only sees topic and recipient key ID for routing.
+// Relay forwards messages without storing or reading payload (zero-knowledge).
+// It only sees topic and recipient key ID for routing; no persistence or queue.
 type Relay struct {
 	addr string
 }

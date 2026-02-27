@@ -4,7 +4,7 @@ package qumbed.schema;
 
 option go_package = "github.com/SWAI-Ltd/Qumbed/internal/proto";
 
-// Typed payload schemas - broker enforces these
+// Typed payload schemas - relay enforces these
 // Schema IDs: "sensor.Temperature", "sensor.Humidity", "control.Command", etc.
 
 message Temperature {

@@ -136,7 +136,8 @@ qumbed/
 ├── examples/
 │   ├── simple_pubsub/    # Hello World pub/sub
 │   ├── secure_conn/      # TLS + E2EE usage
-│   └── high_throughput/  # Multi-stream / throughput
+│   ├── high_throughput/  # Multi-stream / throughput
+│   └── mdns_discovery/   # mDNS publish & browse (P2P discovery)
 ├── internal/
 │   ├── crypto/       # E2EE (NaCl box, Curve25519)
 │   ├── discovery/    # mDNS P2P discovery
@@ -161,6 +162,7 @@ qumbed/
 ## Documentation & tooling
 
 - **Wire protocol:** See [docs/wire-protocol.md](docs/wire-protocol.md) for packet layout, state machine, and error codes.
+- **mDNS discovery:** [docs/mdns.md](docs/mdns.md) describes service type, TXT records, publish/browse, and when to enable or disable discovery.
 - **Formal verification:** [docs/proverif.md](docs/proverif.md) describes the ProVerif model and how to run it; `./scripts/verify_protocol.sh` runs verification (requires `proverif`).
 - **Protobuf:** The [proto/](proto/) folder holds `.proto` files so Python/C++/other clients can generate compatible code.
 - **Validation:** Run `go run ./cmd/qumbed-check -topic <topic>` to listen and confirm messages against the protocol (see [Integration](#integration-test) below).

@@ -1,14 +1,14 @@
 # Release assets
 
-Pre-built **binaries** and **Docker image** for the Qumbed broker and CLI.
+Pre-built **binaries** and **Docker image** for the Qumbed relay, mesh node (mDNS + relay), and CLI.
 
-## Broker binary (relay)
+## Relay
 
 Built for **Linux**, **macOS**, and **Windows** (amd64 and arm64).
 
-- **relay** — the message broker (relay server)
+- **relay** — zero-knowledge relay server (forwards by topic; does not store or read payloads). Use for cross-network or when mDNS is disabled.
 
-Download the archive for your OS from the [Releases](https://github.com/SWAI-Ltd/Qumbed/releases) page, then:
+Download the relay archive for your OS from the [Releases](https://github.com/SWAI-Ltd/Qumbed/releases) page, then:
 
 ```bash
 # Linux/macOS
@@ -19,6 +19,35 @@ tar -xzf qumbed-<version>-<os>-<arch>.tar.gz
 # Unzip qumbed-<version>-windows-<arch>.zip, then:
 relay.exe -addr :6121
 ```
+
+## Node (mDNS + relay)
+
+- **node** — mesh node for pub/sub with **mDNS discovery** and optional **relay** mode.
+
+**Same LAN (mDNS):** run nodes without a relay; they discover each other via mDNS.
+
+```bash
+# Terminal 1
+./node -id alice -relay ""    # no relay; mDNS only
+
+# Terminal 2 (same machine or same LAN)
+./node -id bob -relay ""      # discovers alice via mDNS
+```
+
+**Relay mode (different networks or no mDNS):** point nodes at a relay. Use `-no-discovery` in containers or when you don’t want mDNS.
+
+```bash
+# Start relay first
+./relay -addr :6121
+
+# Subscriber
+./node -mode sub -relay localhost:6121 -no-discovery
+
+# Publisher (use subscriber’s public key)
+./node -mode pub -relay localhost:6121 -recipient-key <hex> -no-discovery
+```
+
+Download the node archive: `node-<version>-<os>-<arch>.tar.gz` (or `.zip` on Windows) from [Releases](https://github.com/SWAI-Ltd/Qumbed/releases).
 
 ## CLI tool (qumbed-check)
 
@@ -31,7 +60,7 @@ For testing topics and connections:
 ./qumbed-check -topic test -relay localhost:6121
 ```
 
-## Docker — run the broker in 5 seconds
+## Docker — run the relay in 5 seconds
 
 Use the published image (after your first release):
 
@@ -47,10 +76,10 @@ docker pull ghcr.io/swai-ltd/qumbed:v1.0.0
 docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:v1.0.0
 ```
 
-The broker listens on **port 6121**. To use it from the host:
+The relay listens on **port 6121**. To use it from the host:
 
 ```bash
-# Terminal 1: broker
+# Terminal 1: relay
 docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:latest
 
 # Terminal 2: CLI (using release binary or go run)
@@ -60,7 +89,7 @@ docker run -p 6121:6121 ghcr.io/swai-ltd/qumbed:latest
 ## Building releases locally
 
 1. Install [GoReleaser](https://goreleaser.com/install/).
-2. **Start Docker Desktop** (required for building and pushing the broker image).
+2. **Start Docker Desktop** (required for building and pushing the relay image).
 3. Create a Git tag and run:
 
 ```bash
@@ -70,7 +99,7 @@ export GITHUB_USER=your-github-username
 ./release/release.sh
 ```
 
-The script logs in to **ghcr.io** with your token so the broker image can be pushed. Your token needs `write:packages` (and `repo` for the GitHub release). If you have the GitHub CLI (`gh`) installed and logged in, `GITHUB_USER` is inferred automatically.
+The script logs in to **ghcr.io** with your token so the relay image can be pushed. Your token needs `write:packages` (and `repo` for the GitHub release). If you have the GitHub CLI (`gh`) installed and logged in, `GITHUB_USER` is inferred automatically.
 
 If you get **`permission_denied: create_package`**, you don't have push access to the default image (`ghcr.io/swai-ltd/qumbed`). Push under your own namespace instead:
 
@@ -82,8 +111,9 @@ export GHCR_IMAGE=ghcr.io/YOUR_USERNAME/qumbed
 Or manually:
 
 ```bash
-git tag v1.0.0-alpha   # use semver, e.g. v1.0.0-alpha or v1.0.0
-goreleaser release --clean
+git tag v1.0.0-beta   # use semver, e.g. v1.0.0-beta or v1.0.0
+./release/release.sh
+# or: goreleaser release --clean
 ```
 
 The script checks that Docker is running and sets up a multi-platform buildx builder so the Docker image builds correctly. If you don't need the Docker image this run, use:

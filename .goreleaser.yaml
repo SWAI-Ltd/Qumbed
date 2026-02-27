@@ -1,14 +1,30 @@
-# GoReleaser config for qumbed — broker binary, CLI, and Docker
+# GoReleaser config for qumbed — relay binary, CLI, and Docker
 # https://goreleaser.com
 version: 2
 
 project_name: qumbed
 
 builds:
-  # Broker (relay) — the main message broker binary
+  # Relay — zero-knowledge message forwarder (no storage, no payload read)
   - id: relay
     main: ./cmd/relay
     binary: relay
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+
+  # Mesh node — pub/sub with mDNS discovery and optional relay
+  - id: node
+    main: ./cmd/node
+    binary: node
     env:
       - CGO_ENABLED=0
     goos:
@@ -48,6 +64,16 @@ archives:
     name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
     ids:
       - relay
+  - id: node
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    name_template: "{{ .Binary }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+    ids:
+      - node
   - id: qumbed-check
     formats:
       - tar.gz
@@ -62,10 +88,10 @@ archives:
 checksum:
   name_template: "checksums.txt"
 
-# Docker image for the broker (relay) — run in 5 seconds
+# Docker image for the relay — run in 5 seconds
 # Repo: https://github.com/SWAI-Ltd/Qumbed — set GHCR_IMAGE to override (e.g. ghcr.io/your-org/qumbed)
 dockers_v2:
-  - id: broker
+  - id: relay
     ids:
       - relay
     dockerfile: Dockerfile
@@ -76,5 +102,5 @@ dockers_v2:
       - "{{ if not .Prerelease }}latest{{ end }}"
     labels:
       org.opencontainers.image.title: qumbed
-      org.opencontainers.image.description: Qumbed message broker (relay)
+      org.opencontainers.image.description: Qumbed relay (zero-knowledge message forwarder)
       org.opencontainers.image.source: "https://github.com/SWAI-Ltd/Qumbed"

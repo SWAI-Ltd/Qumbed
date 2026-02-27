@@ -28,7 +28,7 @@ message PublishFrame {
 // SubscribeFrame - subscriber registers interest in a topic
 message SubscribeFrame {
   string topic = 1;
-  string schema_id = 2;     // Expected schema, broker rejects mismatches
+  string schema_id = 2;     // Expected schema, relay rejects mismatches
   bytes public_key = 3;     // Subscriber's public key for E2EE
 }
 
@@ -37,7 +37,7 @@ message UnsubscribeFrame {
   string topic = 1;
 }
 
-// MessageFrame - relayed message (encrypted payload, broker cannot read)
+// MessageFrame - relayed message (encrypted payload, relay does not read)
 message MessageFrame {
   string topic = 1;
   bytes encrypted_payload = 2;

@@ -38,7 +38,7 @@ type UnsubscribeFrame struct {
 	Topic string `json:"topic"`
 }
 
-// MessageFrame - relayed message (broker forwards without reading payload)
+// MessageFrame - relayed message (relay forwards without reading payload)
 type MessageFrame struct {
 	Topic            string `json:"topic"`
 	EncryptedPayload []byte `json:"encrypted_payload"`

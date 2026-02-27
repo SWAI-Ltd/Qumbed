@@ -9,7 +9,7 @@ import (
 	"github.com/SWAI-Ltd/Qumbed/internal/transport"
 )
 
-// RelayServer is a zero-knowledge broker: routes by topic, never sees payload
+// RelayServer is a zero-knowledge relay: forwards by topic, never stores or reads payload
 type RelayServer struct {
 	server *transport.Server
 	subs   sync.Map // topic -> map[connKey]subscriberInfo
